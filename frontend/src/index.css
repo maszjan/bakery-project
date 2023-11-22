@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body {
-    @apply bg-gradient-to-b from-lightBrown to-lighterBrown md:bg-gradient-to-r md:from-lighterBrown md:to-lightBrown overflow-x-hidden; 
+    @apply bg-light overflow-x-hidden; 
 }

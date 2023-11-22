@@ -10,11 +10,11 @@ module.exports = {
     },
     extend: {
       colors: {
-        lightBrown: "#C1AC99",
-        lighterBrown: "#9A8674",
-        semiBrown: "#756251",
-        darkerBrown: "#514130",
-        darkBrown: "#302213",
+        darkest: "#C4DFDF",
+        semi: "D2E9E9",
+        lighter: "#E3F4F4",
+        light: "#F8F6F4",
+        typo: "#579BB1"
       },
       fontFamily: {
         sans: ["Fira Sans", "sans-serif"],

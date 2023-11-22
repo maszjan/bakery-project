@@ -1,27 +1,55 @@
-import { FiUsers } from "react-icons/fi";
+import { useState } from "react";
+import axios from "axios";
 import FormButton from "./FormButton";
 import Input from "./Input";
 
+const Register = () => {
+  const [registerUserData, setRegisterUserData] = useState({
+    email: "",
+    password: "",
+  });
 
-const Register = (props) => {
+  const registerHandler = async () => {
+    try {
+      // eslint-disable-next-line no-unused-vars
+      const response = await axios.post(
+        "https://localhost:7126/register",
+        registerUserData
+      );
+    } catch (error) {
+      console.error("Can't register this user", error.message);
+    }
+  };
+
+  const inputHandler = (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    setRegisterUserData({ ...registerUserData, [name]: value });
+  };
+
   return (
     <div className="flex flex-col space-y-2 bg-semiBrown px-24 py-12 rounded-3xl">
       <h1 className="text-4xl font-bold text-darkBrown text-center my-6">
         Register account
       </h1>
-      <Input diff="email" title="E-mail"/>
-      <Input diff="text" title="Name" />
-      <Input diff="password" title="Password" />
-      <Input diff="text" title="Address" />
-      <Input diff="text" title="City" />
-      <Input diff="text" title="Postcode" />
-      <Input diff="text" title="Country" />
+      <form>
+        <Input
+          diff="email"
+          title="E-mail"
+          name="email"
+          value={registerUserData.email}
+          onChange={inputHandler}
+        />
+        <Input
+          diff="password"
+          title="Password"
+          name="password"
+          value={registerUserData.password}
+          onChange={inputHandler}
+        />
 
-      <div className="flex flex-row space-x-4">
-        <FiUsers className="w-12 h-12 text-darkBrown" />
-        <Input diff="checkbox" title="B2B" className="accent-darkerBrown" />
-      </div>
-      <FormButton text="Register" />
+        <FormButton text="Register" onClick={registerHandler} />
+      </form>
     </div>
   );
 };

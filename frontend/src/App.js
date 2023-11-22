@@ -9,6 +9,7 @@ import AdminIngredientsPage from "./pages/Admin/IngredientsList";
 import AdminOrdersPage from "./pages/Admin/OrdersList";
 import AdminProductsPage from "./pages/Admin/ProductsList";
 import ClientDashboardPage from "./pages/Client/Dashboard";
+import RegisterPage from "./pages/Register";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
+      {
+        path: "/register",
+        element: <RegisterPage />
+      },
       {
         path: "/admin/dashboard",
         element: <AdminDashboardPage />,

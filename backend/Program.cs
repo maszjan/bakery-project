@@ -2,41 +2,48 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using backend.Models;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Services 
-
-builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddCors(options =>
+internal class Program
 {
-    options.AddPolicy("MyCorsPolicy", builder =>
+    private static void Main(string[] args)
     {
-        builder
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-    });
-});
+        var builder = WebApplication.CreateBuilder(args);
 
-// DB Connection Configuration
-builder.Services.AddDbContext<BakeryContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("bakeryDBCon")));
+        // Services 
+        builder.Services.AddDbContext<BakeryContext>(options =>
+           options.UseSqlServer(builder.Configuration.GetConnectionString("bakeryDBCon")));
+        builder.Services.AddIdentityCore<User>().AddEntityFrameworkStores<BakeryContext>().AddApiEndpoints();
+        builder.Services.AddControllers();
+        builder.Services.AddSwaggerGen();
+        builder.Services.AddAuthentication();
+        builder.Services.AddEndpointsApiExplorer();
 
-var app = builder.Build();
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("MyCorsPolicy", builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        }); 
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+        var app = builder.Build();
+
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseCors("MyCorsPolicy");
+        app.UseHttpsRedirection();
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.MapIdentityApi<User>();
+        app.MapControllers();
+
+        app.Run();
+    }
 }
-
-app.UseCors("MyCorsPolicy");
-app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
-app.MapControllers();
-
-app.Run();

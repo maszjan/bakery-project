@@ -1,9 +1,10 @@
 ﻿using backend.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Models
 {
-    public class BakeryContext : DbContext
+    public class BakeryContext : IdentityDbContext
     {
         public BakeryContext(DbContextOptions<BakeryContext> options) : base(options)
         {

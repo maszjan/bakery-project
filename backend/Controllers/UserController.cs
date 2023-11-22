@@ -8,15 +8,9 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("api/v1")]
-    public class UserController : ControllerBase
+    public class UserController(BakeryContext context) : ControllerBase
     {
-        private readonly BakeryContext _context;
-        public UserController(BakeryContext context)
-        {
-            _context = context;
-        }
-
-        
+        private readonly BakeryContext _context = context;
 
         [HttpGet("user")]
         public IActionResult GetUsers() 
@@ -27,7 +21,7 @@ namespace backend.Controllers
 
      
         [HttpGet("user/{id}")]
-        public IActionResult GetUser(int id)
+        public IActionResult GetUser(string id)
         {
             var user = _context.Users.FirstOrDefault(p=> p.Id == id);
             if(user == null)
@@ -46,7 +40,7 @@ namespace backend.Controllers
         }
  
         [HttpPut("user/{id}")]
-        public IActionResult UpdateUser(int id, [FromBody] User user)
+        public IActionResult UpdateUser(string id, [FromBody] User user)
         {
             if (id != user.Id)
             {
@@ -57,7 +51,7 @@ namespace backend.Controllers
             return NoContent();
         }
         [HttpDelete("user/{id}")]
-        public IActionResult DeleteUser(int id)
+        public IActionResult DeleteUser(string id)
         {
             var user = _context.Users.FirstOrDefault(p=>p.Id == id);
             if (user == null)

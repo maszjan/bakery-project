@@ -9,7 +9,7 @@ const Input = (props) => {
       </label>
       <input
         diff={props.diff}
-        className="md:w-[250px] bg-light focus:bg-darkest focus:outline-0 text-typo font-semibold rounded-md"
+        className="md:w-[250px] bg-darkest focus:bg-light focus:outline-0 text-typo font-semibold rounded-md"
         type={props.diff}
         name={props.name}
         onChange={props.onChange}

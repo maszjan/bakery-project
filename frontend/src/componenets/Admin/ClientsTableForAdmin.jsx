@@ -76,7 +76,6 @@ const ClientsList = () => {
                   postcode,
                   country,
                   isCompanyClient,
-                  accountCreatedAt
                 },
                 index
               ) => {

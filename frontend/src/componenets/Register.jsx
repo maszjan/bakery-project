@@ -9,7 +9,8 @@ const Register = () => {
     password: "",
   });
 
-  const registerHandler = async () => {
+  const registerHandler = async (e) => {
+    e.preventDefault();
     try {
       // eslint-disable-next-line no-unused-vars
       const response = await axios.post(

@@ -12,8 +12,8 @@ using backend.Models;
 namespace backend.Migrations
 {
     [DbContext(typeof(BakeryContext))]
-    [Migration("20231122194241_InitializingDatabase")]
-    partial class InitializingDatabase
+    [Migration("20231125130020_newid")]
+    partial class newid
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -365,11 +365,8 @@ namespace backend.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("AccessToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("AccountCreatedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("AccountCreatedAt")
+                        .HasColumnType("date");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
@@ -386,16 +383,13 @@ namespace backend.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Postcode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("TokenExpiresAt")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("SurName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("User");

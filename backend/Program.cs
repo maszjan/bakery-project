@@ -14,7 +14,8 @@ internal class Program
         builder.Services.AddIdentityCore<User>().AddEntityFrameworkStores<BakeryContext>().AddApiEndpoints();
         builder.Services.AddControllers();
         builder.Services.AddSwaggerGen();
-        builder.Services.AddAuthentication();
+        builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+        builder.Services.AddAuthorizationBuilder();
         builder.Services.AddEndpointsApiExplorer();
 
         builder.Services.AddCors(options =>

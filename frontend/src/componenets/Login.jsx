@@ -1,41 +1,83 @@
 import Input from "./Input";
 import FormButton from "./FormButton";
+import axios from "axios";
+import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { setUser } from "../store/slices/userSlice";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [loginUserData, setLoginUserData] = useState({
+    email: "",
+    password: "",
+  });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const loginHandler = (e) => {
+  const loginHandler = async (e) => {
     e.preventDefault();
-    return navigate("/admin/dashboard");
+
+    try {
+      // eslint-disable-next-line no-unused-vars
+      const response = await axios.post(
+        "https://localhost:7126/login",
+        loginUserData
+      );
+
+
+      const userResponse = await axios.get(
+        `https://localhost:7126/api/v1/user/${loginUserData.email}`,
+      );
+
+      dispatch(setUser(userResponse.data));
+
+      const userRole = userResponse.data.role;
+      
+      console.log(userRole);
+
+      if (userRole === "admin" ) {
+        navigate("/admin/dashboard");
+      } else 
+      // eslint-disable-next-line no-lone-blocks
+      {
+        navigate("/client/dashboard");
+      }
+    } catch (error) {
+      console.error("Can't log in this user", error.message);
+    }
+  };
+
+  const inputHandler = (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    setLoginUserData({ ...loginUserData, [name]: value });
   };
 
   return (
     <div className="flex flex-col space-y-4 mx-auto items-center px-5 py-5 bg-lighter rounded-2xl">
-    <h1 className="text-xl text-typo">Welcome back!</h1>
+      <h1 className="text-xl text-typo">Welcome back!</h1>
       <form className="flex flex-col space-y-5">
         <Input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           diff="email"
           title="E-mail"
+          name="email"
+          value={loginUserData.email}
+          onChange={inputHandler}
         />
         <Input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
           diff="password"
           title="Password"
+          name="password"
+          value={loginUserData.password}
+          onChange={inputHandler}
         />
         <FormButton onClick={loginHandler} text="Log in" />
       </form>
       <p className="text-typo text-sm">You don't have an account?</p>
-      <Link to="/register"><p className="text-typo text-sm font-bold">Register</p></Link>
-      
-    
+      <Link to="/register">
+        <p className="text-typo text-sm font-bold">Register</p>
+      </Link>
     </div>
   );
 };

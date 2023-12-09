@@ -20,10 +20,10 @@ namespace backend.Controllers
         }
 
      
-        [HttpGet("user/{id}")]
-        public IActionResult GetUser(string id)
+        [HttpGet("user/{Email}")]
+        public IActionResult GetUser(string Email)
         {
-            var user = _context.Users.FirstOrDefault(p=> p.Id == id);
+            var user = _context.Users.FirstOrDefault(p=> p.Email == Email);
             if(user == null)
             {
                 return NotFound();
@@ -39,10 +39,10 @@ namespace backend.Controllers
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
  
-        [HttpPut("user/{id}")]
-        public IActionResult UpdateUser(string id, [FromBody] User user)
+        [HttpPut("user/{Email}")]
+        public IActionResult UpdateUser(string Email, [FromBody] User user)
         {
-            if (id != user.Id)
+            if (Email != user.Email)
             {
                 return BadRequest();
             }
@@ -51,9 +51,9 @@ namespace backend.Controllers
             return NoContent();
         }
         [HttpDelete("user/{id}")]
-        public IActionResult DeleteUser(string id)
+        public IActionResult DeleteUser(int id)
         {
-            var user = _context.Users.FirstOrDefault(p=>p.Id == id);
+            var user = _context.Users.FirstOrDefault(p=> p.Id == id);
             if (user == null)
             {
                 return NotFound();

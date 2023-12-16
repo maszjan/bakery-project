@@ -5,9 +5,11 @@ import axios from "axios";
 import EditIngredient from "./EditIngredient";
 
 
-const IngredientsList = () => {
+const IngredientsTableForAdmin = () => {
   const [ingredientsData, setIngredientsData] = useState([]);
   const [isEditModalVisible,setIsEditModalVisible] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,14 +23,29 @@ const IngredientsList = () => {
     fetchData();
   }, []);
 
-  const openEditHandler = (event) => {
-    event.preventDefault()
+  const openEditHandler = (e,record) => {
+    e.preventDefault()
+    setSelectedRecord(record);
     setIsEditModalVisible(true);
   }
 
-  const closeEditHandler = (event) => {
-    event.preventDefault()
+  const closeEditHandler = (e) => {
+    e.preventDefault()
     setIsEditModalVisible(false);
+  }
+
+  const deleteIngredientHandler = async (e, record) => {
+    e.preventDefault();
+    setSelectedRecord(record);
+    try {
+      // eslint-disable-next-line no-unused-vars
+      const response = await axios.delete(
+        `https://localhost:7126/api/v1/user/${record.id}`,
+      );
+      
+    } catch (error) {
+      console.error("Can't delete this user", error.message);
+    }
   }
 
   const TABLE_HEAD = [
@@ -43,7 +60,7 @@ const IngredientsList = () => {
 
   return (
     <div>
-    {isEditModalVisible ? <EditIngredient onClick={closeEditHandler}/> : ""}
+    {isEditModalVisible ? <EditIngredient record={selectedRecord} onClick={closeEditHandler} /> : ""}
       <Card className="h-full w-full">
         <table className="w-full min-w-max table-auto text-left">
           <thead>
@@ -131,7 +148,13 @@ const IngredientsList = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        <button className="focus:outline-none flex mx-auto items-center" onClick={openEditHandler}>
+                        <button className="focus:outline-none flex mx-auto items-center" onClick={(event) => openEditHandler(event, {
+                            id,
+                            name,
+                            quantity,
+                            unit,
+                            price
+                          })}>
                           <AiOutlineEdit/>
                         </button>
                       </Typography>
@@ -142,7 +165,9 @@ const IngredientsList = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        <button className="focus:outline-none flex mx-auto items-center">
+                        <button className="focus:outline-none flex mx-auto items-center" onClick={(event) => deleteIngredientHandler(event, {
+                            id
+                          })}>
                           <AiOutlineCloseCircle/>
                         </button>
                       </Typography>
@@ -158,4 +183,4 @@ const IngredientsList = () => {
   );
 };
 
-export default IngredientsList;
+export default IngredientsTableForAdmin;

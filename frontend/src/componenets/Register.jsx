@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import FormButton from "./FormButton";
 import Input from "./Input";
+import BackLinkLogin from "./BackLinkLogin";
 
 const Register = () => {
   const [registerUserData, setRegisterUserData] = useState({
@@ -30,6 +31,7 @@ const Register = () => {
 
   return (
     <div className="flex flex-col space-y-2 bg-semiBrown px-24 py-12 rounded-3xl">
+      <BackLinkLogin />
       <h1 className="text-4xl font-bold text-darkBrown text-center my-6">
         Register account
       </h1>

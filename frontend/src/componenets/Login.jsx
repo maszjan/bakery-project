@@ -25,22 +25,19 @@ const Login = () => {
         loginUserData
       );
 
-
       const userResponse = await axios.get(
-        `https://localhost:7126/api/v1/user/${loginUserData.email}`,
+        `https://localhost:7126/api/v1/user/${loginUserData.email}`
       );
 
       dispatch(setUser(userResponse.data));
 
       const userRole = userResponse.data.role;
-      
-      console.log(userRole);
 
-      if (userRole === "admin" ) {
+      if (userRole === "admin") {
         navigate("/admin/dashboard");
-      } else 
+      }
       // eslint-disable-next-line no-lone-blocks
-      {
+      else {
         navigate("/client/dashboard");
       }
     } catch (error) {

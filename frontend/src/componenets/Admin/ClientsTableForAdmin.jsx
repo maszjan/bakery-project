@@ -5,9 +5,11 @@ import axios from "axios";
 import EditClient from "./EditClient";
 
 
-const ClientsList = () => {
+const ClientsList = (props) => {
   const [usersData, setUsersData] = useState([]);
   const [isEditModalVisible,setIsEditModalVisible] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,14 +23,29 @@ const ClientsList = () => {
     fetchData();
   }, []);
 
-  const openEditHandler = (event) => {
-    event.preventDefault()
+  const openEditHandler = (e, record) => {
+    e.preventDefault();
+    setSelectedRecord(record);
     setIsEditModalVisible(true);
   }
 
-  const closeEditHandler = (event) => {
-    event.preventDefault()
+  const closeEditHandler = (e) => {
+    e.preventDefault()
     setIsEditModalVisible(false);
+  }
+
+  const deleteUserHandler = async (e, record) => {
+    e.preventDefault();
+    setSelectedRecord(record);
+    try {
+      // eslint-disable-next-line no-unused-vars
+      const response = await axios.delete(
+        `https://localhost:7126/api/v1/user/${record.id}`,
+      );
+      
+    } catch (error) {
+      console.error("Can't delete this user", error.message);
+    }
   }
 
   const TABLE_HEAD = [
@@ -46,7 +63,7 @@ const ClientsList = () => {
 
   return (
     <div>
-    {isEditModalVisible ? <EditClient onClick={closeEditHandler}/> : ""}
+    {isEditModalVisible ? <EditClient record={selectedRecord} onClick={closeEditHandler}/> : ""}
       <Card className="h-full w-full">
         <table className="w-full min-w-max table-auto text-left">
           <thead>
@@ -82,14 +99,14 @@ const ClientsList = () => {
                 const isLast = index === usersData.length - 1;
                 const classes = isLast
                   ? "p-4"
-                  : "p-4 border-b border-darkBrown";
+                  : "p-4 border-b border-darkest";
 
                 return (
                   <tr key={id}>
                     <td className={classes}>
                       <Typography
                         variant="small"
-                        color="brown"
+                        color="brown" 
                         className="font-normal"
                       >
                         {id}
@@ -164,7 +181,16 @@ const ClientsList = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        <button className="focus:outline-none flex mx-auto items-center" onClick={openEditHandler}>
+                        <button className="focus:outline-none flex mx-auto items-center" onClick={(event) => openEditHandler(event, {
+                            id,
+                            name,
+                            email,
+                            address,
+                            city,
+                            postcode,
+                            country,
+                            isCompanyClient,
+                          })}>
                           <AiOutlineEdit/>
                         </button>
                       </Typography>
@@ -175,7 +201,9 @@ const ClientsList = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        <button className="focus:outline-none flex mx-auto items-center">
+                        <button className="focus:outline-none flex mx-auto items-center" onClick={(event) => deleteUserHandler(event, {
+                            id
+                          })}>
                           <AiOutlineCloseCircle/>
                         </button>
                       </Typography>

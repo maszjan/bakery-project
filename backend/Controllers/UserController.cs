@@ -21,9 +21,9 @@ namespace backend.Controllers
 
      
         [HttpGet("user/{Email}")]
-        public IActionResult GetUser(string Email)
+        public IActionResult GetUser(string email)
         {
-            var user = _context.Users.FirstOrDefault(p=> p.Email == Email);
+            var user = _context.Users.FirstOrDefault(p=> p.Email == email);
             if(user == null)
             {
                 return NotFound();
@@ -39,21 +39,30 @@ namespace backend.Controllers
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
  
-        [HttpPut("user/{Email}")]
-        public IActionResult UpdateUser(string Email, [FromBody] User user)
+        [HttpPut("user/{id}")]
+        public IActionResult UpdateUser(string id, [FromBody] User user)
         {
-            if (Email != user.Email)
+            var userToUpdate = _context.Users.FirstOrDefault(p => p.Id == id);
+            if (id != user.Id)
             {
                 return BadRequest();
             }
-            _context.Entry(user).State = EntityState.Modified;
+            userToUpdate.Name = user.Name;
+            userToUpdate.Address = user.Address;
+            userToUpdate.Email = user.Email;
+            userToUpdate.Id = user.Id;
+            userToUpdate.City = user.City;
+            userToUpdate.Postcode = user.Postcode;
+            userToUpdate.Country = user.Country;
+
+            _context.Users.Update(userToUpdate);
             _context.SaveChanges();
             return NoContent();
         }
-        [HttpDelete("user/{id}")]
-        public IActionResult DeleteUser(int id)
+        [HttpDelete("user/{Id}")]
+        public IActionResult DeleteUser(string id)
         {
-            var user = _context.Users.FirstOrDefault(p=> p.Id == id);
+            var user = _context.Users.FirstOrDefault(p => p.Id == id);
             if (user == null)
             {
                 return NotFound();

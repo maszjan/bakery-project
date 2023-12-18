@@ -1,7 +1,13 @@
+import BackLinkClient from "../../componenets/BackLinkClient";
+import Profile from "../../componenets/Client/Profile";
+
+
 const ClientProfile = () => {
+  
     return (
-        <div>
-            <h1>ClientProfile</h1>
+        <div className="flex flex-col space-y-5 mx-auto items-center my-64">
+            <BackLinkClient />
+            <Profile />
         </div>
     );
 }

@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { setUser } from "../store/slices/userSlice";
+import { persistor } from "../store";
+
 
 const Login = () => {
   const [loginUserData, setLoginUserData] = useState({
@@ -40,6 +42,7 @@ const Login = () => {
       else {
         navigate("/client/dashboard");
       }
+      persistor.persist();  
     } catch (error) {
       console.error("Can't log in this user", error.message);
     }

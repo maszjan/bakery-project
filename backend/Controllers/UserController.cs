@@ -48,12 +48,14 @@ namespace backend.Controllers
                 return BadRequest();
             }
             userToUpdate.Name = user.Name;
+            userToUpdate.SurName = user.SurName;
             userToUpdate.Address = user.Address;
             userToUpdate.Email = user.Email;
             userToUpdate.Id = user.Id;
             userToUpdate.City = user.City;
             userToUpdate.Postcode = user.Postcode;
             userToUpdate.Country = user.Country;
+            userToUpdate.IsCompanyClient = user.IsCompanyClient;
 
             _context.Users.Update(userToUpdate);
             _context.SaveChanges();

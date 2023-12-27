@@ -5,7 +5,7 @@ const FormButton = (props) => {
     <button
       text={props.text}
       onClick={props.onClick}
-      className="text-3xl hover:scale-105  hover:mx-12 px-8 transition-all text-center py-2 font-semibold focus:outline-0 text-typo bg-darkest rounded-md"
+      className="text-3xl hover:scale-105  px-8 transition-all text-center py-2 font-semibold focus:outline-0 text-typo bg-darkest rounded-md"
     >
       {props.text}
     </button>

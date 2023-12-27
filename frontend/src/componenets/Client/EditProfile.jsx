@@ -5,8 +5,11 @@ import FormButton from "../FormButton";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { selectUser } from "../../store/slices/userSlice";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/slices/userSlice";
 
 const EditProfile = (props) => {
+  const dispatch = useDispatch();
   const userData = useSelector(selectUser);
   const editedData = {
     id: userData.id,
@@ -17,6 +20,7 @@ const EditProfile = (props) => {
     city: userData.city,
     postcode: userData.postcode,
     country: userData.country,
+    isCompanyClient: userData.isCompanyClient,
   };
   const [editUserData, setEditUserData] = useState(editedData);
 
@@ -28,15 +32,23 @@ const EditProfile = (props) => {
         `https://localhost:7126/api/v1/user/${userData.id}`,
         editUserData
       );
+
+      const updatedUserResponse = await axios.get(
+        `https://localhost:7126/api/v1/user/${userData.email}`
+      );
+
+      dispatch(setUser(updatedUserResponse.data));
     } catch (error) {
       console.error("Can't edit this user", error.message);
     }
   };
 
-  const inputHandler = (event) => {
-    event.preventDefault();
-    const { name, value } = event.target;
-    setEditUserData({ ...editUserData, [name]: value });
+  const inputHandler = (e) => {
+    const { name, value, type, checked } = e.target;
+    setEditUserData((prevState) => ({
+      ...prevState,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   return (
@@ -102,6 +114,14 @@ const EditProfile = (props) => {
         onChange={inputHandler}
         value={editUserData.country}
       />
+      <Input
+        diff="checkbox"
+        title="B2B"
+        name="isCompanyClient"
+        onChange={inputHandler}
+        checked={editUserData.isCompanyClient}
+      />
+
       <FormButton onClick={editHandler} text="Update" />
     </form>
   );

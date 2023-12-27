@@ -1,14 +1,13 @@
 import { Card, Typography } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
-import { AiOutlineEdit, AiOutlineCloseCircle } from 'react-icons/ai';
+import { AiOutlineEdit, AiOutlineCloseCircle } from "react-icons/ai";
 import axios from "axios";
 import EditOrder from "./EditOrder";
 
-
 const OrdersList = () => {
-    
   const [ordersData, setOrdersData] = useState([]);
-  const [isEditModalVisible,setIsEditModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,20 +16,33 @@ const OrdersList = () => {
         setOrdersData(response.data);
       } catch (error) {
         console.error(error.message);
-      };  
+      }
     };
     fetchData();
   }, []);
 
-  const openEditHandler = (event) => {
-    event.preventDefault()
+  const openEditHandler = (event, record) => {
+    event.preventDefault();
+    setSelectedRecord(record);
     setIsEditModalVisible(true);
-  }
+  };
 
   const closeEditHandler = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     setIsEditModalVisible(false);
-  }
+  };
+  const deleteOrderHandler = async (e, record) => {
+    e.preventDefault();
+    setSelectedRecord(record);
+    try {
+      // eslint-disable-next-line no-unused-vars
+      const response = await axios.delete(
+        `https://localhost:7126/api/v1/order/${record.id}`
+      );
+    } catch (error) {
+      console.error("Can't delete this user", error.message);
+    }
+  };
 
   const TABLE_HEAD = [
     "Id",
@@ -40,12 +52,16 @@ const OrdersList = () => {
     "Document",
     "Order created at",
     "Edit",
-    "Remove"
+    "Remove",
   ];
 
   return (
     <div>
-    {isEditModalVisible ? <EditOrder onClick={closeEditHandler}/> : ""}
+      {isEditModalVisible ? (
+        <EditOrder record={selectedRecord} onClick={closeEditHandler} />
+      ) : (
+        ""
+      )}
       <Card className="h-full w-full">
         <table className="w-full min-w-max table-auto text-left">
           <thead>
@@ -143,8 +159,19 @@ const OrdersList = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        <button className="focus:outline-none flex mx-auto items-center" onClick={openEditHandler}>
-                          <AiOutlineEdit/>
+                        <button
+                          className="focus:outline-none flex mx-auto items-center"
+                          onClick={(event) =>
+                            openEditHandler(event, {
+                              id,
+                              userId,
+                              orderStatus,
+                              orderTotal,
+                              document,
+                            })
+                          }
+                        >
+                          <AiOutlineEdit />
                         </button>
                       </Typography>
                     </td>
@@ -154,8 +181,15 @@ const OrdersList = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        <button className="focus:outline-none flex mx-auto items-center">
-                          <AiOutlineCloseCircle/>
+                        <button
+                          className="focus:outline-none flex mx-auto items-center"
+                          onClick={(event) =>
+                            deleteOrderHandler(event, {
+                              id,
+                            })
+                          }
+                        >
+                          <AiOutlineCloseCircle />
                         </button>
                       </Typography>
                     </td>

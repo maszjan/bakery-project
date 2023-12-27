@@ -9,6 +9,7 @@ const Profile = () => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
 
+
   const openEditHandler = (e) => {
     e.preventDefault();
     setIsEditModalVisible(true);
@@ -21,7 +22,7 @@ const Profile = () => {
 
   return (
     <div className="flex flex-col space-y-3 bg-darkest mx-auto items-center w-96 rounded-xl my-14">
-      {isEditModalVisible ? <EditProfile onClick={closeEditHandler} /> : ""}
+      {isEditModalVisible ? <EditProfile setIsEditModalVisible={setIsEditModalVisible} onClick={closeEditHandler} /> : ""}
       <h1 className="font-bold text-2xl text-typo my-4">Your Profile</h1>
       <div className="flex flex-row space-x-2 my-2">
         <p className="font-bold text-typo">Name:</p>

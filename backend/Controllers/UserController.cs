@@ -34,6 +34,7 @@ namespace backend.Controllers
         [HttpPost("user")]
         public IActionResult CreateUser([FromBody] User user)
         {
+            user.AccountCreatedAt = DateTime.Now;
             _context.Users.Add(user);
             _context.SaveChanges();
             return CreatedAtAction("GetUser", new { id = user.Id }, user);

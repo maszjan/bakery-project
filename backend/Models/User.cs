@@ -16,7 +16,7 @@ namespace backend.Models
         public string Role { get; set; }
 
 
-        public DateOnly AccountCreatedAt { get; set; }
+        public DateTime AccountCreatedAt { get; set; }
 
         public bool IsCompanyClient { get; set; }
 

@@ -34,11 +34,61 @@ namespace backend.Controllers
             }
             return Ok(order);
         }
+        [HttpGet("order/user/{userId}")]
+        public IActionResult GetOrdersByUserId(string userId)
+        {
+            var orders = _context.Orders
+            .Include(o => o.OrderItems)
+            .ThenInclude(op => op.Product)
+            .Where(o => o.UserId == userId)
+            .ToList();
+            if (orders == null)
+            {
+                return NotFound();
+            }
+            return Ok(orders);
+        }
+
 
         [HttpPost("order")]
         public IActionResult PostOrder([FromBody] Order order) 
         {
-            _context.Orders.Add(order);
+            var existingOrder = _context.Orders
+            .Include(o => o.OrderItems)
+            .FirstOrDefault(o => o.Id == order.Id);
+
+            if (existingOrder != null)
+            {
+                
+                _context.Entry(existingOrder).CurrentValues.SetValues(order);
+                existingOrder.OrderItems.Clear();
+                foreach (var item in order.OrderItems)
+                {
+                    var product = _context.Products.Find(item.ProductId);
+                    if (product != null)
+                    {
+                        existingOrder.OrderItems.Add(new OrderItem
+                        {
+                            Product = product,
+                            Qunatity = item.Qunatity
+                        });
+                    }
+                }
+            }
+            else
+            {
+                order.OrderCreatedAt = DateTime.Now;
+                foreach (var item in order.OrderItems)
+                {
+                    var product = _context.Products.Find(item.ProductId);
+                    if (product != null)
+                    {
+                        item.Product = product;
+                    }
+                }
+                _context.Orders.Add(order);
+            }
+
             _context.SaveChanges();
             return CreatedAtAction("PostOrder", new { id = order.Id }, order);
         }

@@ -71,7 +71,7 @@ const ClientProductsList = () => {
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {price}
+                      ${price}
                     </Typography>
                   </td>
                 </tr>

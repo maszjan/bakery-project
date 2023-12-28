@@ -51,6 +51,7 @@ const OrdersList = () => {
     "Order Total",
     "Document",
     "Order created at",
+    "Order Items",
     "Edit",
     "Remove",
   ];
@@ -89,6 +90,7 @@ const OrdersList = () => {
                   orderTotal,
                   document,
                   orderCreatedAt,
+                  orderItems
                 },
                 index
               ) => {
@@ -152,6 +154,28 @@ const OrdersList = () => {
                       >
                         {orderCreatedAt}
                       </Typography>
+                    </td>
+                    <td className={classes}>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {orderItems.map((item, index) => (
+                            <tr key={index}>
+                              <td>{item.product.name}</td>
+                              <td>{item.qunatity}</td>
+                              <td>${item.price}</td>
+                              <td>${item.totalPrice}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </td>
                     <td className={classes}>
                       <Typography

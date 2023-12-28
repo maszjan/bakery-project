@@ -116,7 +116,7 @@ const ProductsList = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        {price}
+                        ${price}
                       </Typography>
                     </td>
                     <td className={classes}>

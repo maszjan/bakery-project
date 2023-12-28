@@ -12,7 +12,9 @@ const ClientOrderTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://localhost:7126/api/v1/order/user/${userID}`);
+        const response = await axios.get(
+          `https://localhost:7126/api/v1/order/user/${userID}`
+        );
         setOrdersData(response.data);
       } catch (error) {
         console.error(error.message);
@@ -27,6 +29,7 @@ const ClientOrderTable = () => {
     "Order Total",
     "Document",
     "Order created at",
+    "Order Items",
   ];
 
   return (
@@ -51,7 +54,14 @@ const ClientOrderTable = () => {
           <tbody>
             {ordersData.map(
               (
-                { id, orderStatus, orderTotal, document, orderCreatedAt },
+                {
+                  id,
+                  orderStatus,
+                  orderTotal,
+                  document,
+                  orderCreatedAt,
+                  orderItems,
+                },
                 index
               ) => {
                 const isLast = index === ordersData.length - 1;
@@ -85,7 +95,7 @@ const ClientOrderTable = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        {orderTotal}
+                        ${orderTotal}
                       </Typography>
                     </td>
                     <td className={classes}>
@@ -105,6 +115,28 @@ const ClientOrderTable = () => {
                       >
                         {orderCreatedAt}
                       </Typography>
+                    </td>
+                    <td className={classes}>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {orderItems.map((item, index) => (
+                            <tr key={index}>
+                              <td>{item.product.name}</td>
+                              <td>{item.qunatity}</td>
+                              <td>${item.price}</td>
+                              <td>${item.totalPrice}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </td>
                   </tr>
                 );

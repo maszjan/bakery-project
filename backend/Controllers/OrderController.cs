@@ -20,7 +20,15 @@ namespace backend.Controllers
         [HttpGet("order")]
         public IActionResult GetOrders()
         {
-            var orders = _context.Orders.ToList();
+            var orders = _context.Orders
+              .Include(o => o.OrderItems)
+              .ThenInclude(i => i.Product)
+              .ToList();
+
+            if (orders == null)
+            {
+                return NotFound();
+            }
             return Ok(orders);
         }
 
@@ -38,10 +46,11 @@ namespace backend.Controllers
         public IActionResult GetOrdersByUserId(string userId)
         {
             var orders = _context.Orders
-            .Include(o => o.OrderItems)
-            .ThenInclude(op => op.Product)
-            .Where(o => o.UserId == userId)
-            .ToList();
+        .Include(o => o.OrderItems)
+        .ThenInclude(i => i.Product)
+        .Where(o => o.UserId == userId)
+        .ToList();
+
             if (orders == null)
             {
                 return NotFound();
@@ -78,6 +87,7 @@ namespace backend.Controllers
             else
             {
                 order.OrderCreatedAt = DateTime.Now;
+                order.OrderStatus = "New";
                 foreach (var item in order.OrderItems)
                 {
                     var product = _context.Products.Find(item.ProductId);

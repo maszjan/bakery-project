@@ -23,7 +23,7 @@ namespace backend.Controllers
         }
 
         [HttpGet("product/{id}")]
-        public IActionResult GetProduct(int id)
+        public IActionResult GetProduct(string id)
         {
             var product = _context.Products.FirstOrDefault(p => p.Id == id);
             if ( product == null)
@@ -38,11 +38,11 @@ namespace backend.Controllers
         {
             _context.Products.Add(product);
             _context.SaveChanges();
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+            return CreatedAtAction("CreateProduct", new { id = product.Id }, product);
         }
 
       [HttpPut("product/{id}")]
-      public IActionResult UpdateProduct(int id, [FromBody] Product product)
+      public IActionResult UpdateProduct(string id, [FromBody] Product product)
         {
             if (id != product.Id)
             {
@@ -55,7 +55,7 @@ namespace backend.Controllers
 
         [HttpDelete("product/{id}")]
 
-        public IActionResult DeleteProduct(int id) 
+        public IActionResult DeleteProduct(string id) 
         {
             var product = _context.Products.FirstOrDefault(p => p.Id == id);
             if ( product == null)

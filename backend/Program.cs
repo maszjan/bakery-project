@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using backend.Models;
 
+
 internal class Program
 {
     private static void Main(string[] args)
@@ -27,9 +28,11 @@ internal class Program
                     .AllowAnyMethod()
                     .AllowAnyHeader();
             });
-        }); 
-
+        });
         var app = builder.Build();
+
+       
+
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

@@ -1,7 +1,9 @@
 ﻿using backend.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using System.IO;
 
 namespace backend.Controllers
 {
@@ -59,9 +61,25 @@ namespace backend.Controllers
         }
 
 
-        [HttpPost("order")]
+    [HttpPost("order")]
         public IActionResult PostOrder([FromBody] Order order) 
         {
+            var user = _context.Users.Find(order.UserId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            if (user.IsCompanyClient)
+            { 
+                const int discount = 5;
+
+                foreach (var item in order.OrderItems)
+                {
+                    item.Discount = discount;
+                    item.TotalPrice -= discount;
+                }
+            }
             var existingOrder = _context.Orders
             .Include(o => o.OrderItems)
             .FirstOrDefault(o => o.Id == order.Id);
@@ -79,7 +97,9 @@ namespace backend.Controllers
                         existingOrder.OrderItems.Add(new OrderItem
                         {
                             Product = product,
-                            Qunatity = item.Qunatity
+                            Qunatity = item.Qunatity,
+                            Discount = item.Discount,
+                            TotalPrice = item.TotalPrice
                         });
                     }
                 }

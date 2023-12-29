@@ -123,6 +123,7 @@ const ClientOrderTable = () => {
                             <th>Product</th>
                             <th>Quantity</th>
                             <th>Price</th>
+                            <th>Discount</th>
                             <th>Total</th>
                           </tr>
                         </thead>
@@ -132,6 +133,7 @@ const ClientOrderTable = () => {
                               <td>{item.product.name}</td>
                               <td>{item.qunatity}</td>
                               <td>${item.price}</td>
+                              <td>${item.discount}</td>
                               <td>${item.totalPrice}</td>
                             </tr>
                           ))}

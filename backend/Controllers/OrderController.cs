@@ -1,4 +1,6 @@
 ﻿using backend.Models;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PdfSharp.Drawing;
@@ -61,7 +63,60 @@ namespace backend.Controllers
         }
 
 
-    [HttpPost("order")]
+        [HttpGet("{id}/document")]
+        public IActionResult GetInvoice(int id)
+        {
+            
+            var order = _context.Orders.FirstOrDefault(p => p.Id == id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var orderItems = _context.OrderItems
+            .Where(oi => oi.OrderId == id)
+            .Include(oi => oi.Product)
+            .ToList();
+
+
+            Document document = new Document();
+
+           
+            MemoryStream stream = new MemoryStream();
+            PdfWriter writer = PdfWriter.GetInstance(document, stream);
+            writer.CloseStream = false;
+
+
+            document.Open();
+
+            
+            document.Add(new Paragraph($"Invoice for Order: {order.Id}"));
+            document.Add(new Paragraph($"Order Date: {order.OrderCreatedAt}")); 
+
+            
+            document.Add(new Paragraph("\n"));
+
+            foreach (var item in orderItems)
+            {
+                document.Add(new Paragraph($"Product: {item.Product.Name}, Quantity: {item.Qunatity}, Price: ${item.Price}, Discount: ${item.Discount}, Sum: ${item.TotalPrice}")); 
+            }
+
+            document.Add(new Paragraph("\n"));
+
+ 
+            document.Add(new Paragraph($"Total: {order.OrderTotal}")); 
+
+            
+            document.Close();
+
+            
+            stream.Position = 0;
+
+            
+            return File(stream, "application/pdf", $"Invoice_{order.Id}.pdf");
+        }
+
+        [HttpPost("order")]
         public IActionResult PostOrder([FromBody] Order order) 
         {
             var user = _context.Users.Find(order.UserId);

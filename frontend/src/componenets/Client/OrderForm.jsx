@@ -104,20 +104,20 @@ export default function OrderForm() {
 
   return (
     <div>
-      <h1 className="text-typo text-2xl mx-9">Select Products</h1>
+      <h1 className="text-typo text-2xl  font-bold mx-64">Select Products</h1>
       <div className="flex flex-row space-x-2 items-center justify-center mx-auto p-2">
         {products.map((product) => (
           <div
             key={product.id}
             onClick={() => handleProductClick(product)}
-            className="w-16 h-16 border border-typo hover:border-white hover:bg-typo hover:text-white flex flex-col items-center justify-center cursor-pointer"
+            className="w-32 h-32 border border-typo hover:border-white hover:bg-typo hover:text-white flex flex-col items-center justify-center cursor-pointer"
           >
-            <p className="font-bold text-lg">{product.name}</p>
+            <p className="font-bold text-lg mx-4">{product.name}</p>
             <p>${product.price}</p>
           </div>
         ))}
       </div>
-      <div className="mx-9">
+      <div className="mx-64">
         <h2 className="font-bold text-typo">Selected Products:</h2>
         {order.orderItems.map((item, index) => (
           <div className="flex flex-row space-x-2" key={index}>
@@ -134,7 +134,7 @@ export default function OrderForm() {
         ))}
         <p className="font-bold">Total: ${total}</p>
       </div>
-      <form onSubmit={handleSubmit}>
+      <form className="mx-64" onSubmit={handleSubmit}>
         <FormButton text="Place Order"></FormButton>
       </form>
     </div>

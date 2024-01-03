@@ -48,6 +48,8 @@ const ClientsList = (props) => {
     }
   }
 
+  
+
   const TABLE_HEAD = [
     "Id",
     "Name",

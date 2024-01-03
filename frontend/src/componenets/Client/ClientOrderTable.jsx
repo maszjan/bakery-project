@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/userSlice";
 import axios from "axios";
+import download from "downloadjs";
+import { FaFileDownload } from "react-icons/fa";
 
 const ClientOrderTable = () => {
   const userData = useSelector(selectUser);
@@ -23,13 +25,35 @@ const ClientOrderTable = () => {
     fetchData();
   }, [userID]);
 
+  const fetchInvoice = async (orderID) => {
+    try {
+      const response = await axios.get(
+        `https://localhost:7126/api/v1/${orderID}/document`,
+        { responseType: "blob" }
+      );
+      const contentDisposition = response.headers["content-disposition"];
+      let filename = `invoice_${orderID}.pdf`;
+
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+        if (filenameMatch.length === 2) {
+          filename = filenameMatch[1];
+        }
+      }
+
+      download(response.data, filename, response.headers["content-type"]);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   const TABLE_HEAD = [
     "Id",
     "Orders Status",
     "Order Total",
     "Document",
     "Order created at",
-    "Order Items",
+    "Order Details",
   ];
 
   return (
@@ -54,14 +78,7 @@ const ClientOrderTable = () => {
           <tbody>
             {ordersData.map(
               (
-                {
-                  id,
-                  orderStatus,
-                  orderTotal,
-                  document,
-                  orderCreatedAt,
-                  orderItems,
-                },
+                { id, orderStatus, orderTotal, orderCreatedAt, orderItems },
                 index
               ) => {
                 const isLast = index === ordersData.length - 1;
@@ -104,7 +121,12 @@ const ClientOrderTable = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        {document}
+                        <button
+                          onClick={() => fetchInvoice(id)}
+                          className="mx-6 hover:text-green-400"
+                        >
+                          <FaFileDownload />
+                        </button>
                       </Typography>
                     </td>
                     <td className={classes}>

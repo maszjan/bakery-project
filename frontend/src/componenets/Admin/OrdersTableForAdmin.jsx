@@ -1,7 +1,9 @@
 import { Card, Typography } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
 import { AiOutlineEdit, AiOutlineCloseCircle } from "react-icons/ai";
+import { FaFileDownload } from "react-icons/fa";
 import axios from "axios";
+import download from "downloadjs";
 import EditOrder from "./EditOrder";
 
 const OrdersList = () => {
@@ -41,6 +43,28 @@ const OrdersList = () => {
       );
     } catch (error) {
       console.error("Can't delete this user", error.message);
+    }
+  };
+
+  const fetchInvoice = async (orderID) => {
+    try {
+      const response = await axios.get(
+        `https://localhost:7126/api/v1/${orderID}/document`,
+        { responseType: "blob" }
+      );
+      const contentDisposition = response.headers["content-disposition"];
+      let filename = `invoice_${orderID}.pdf`;
+
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+        if (filenameMatch.length === 2) {
+          filename = filenameMatch[1];
+        }
+      }
+
+      download(response.data, filename, response.headers["content-type"]);
+    } catch (error) {
+      console.error(error.message);
     }
   };
 
@@ -88,7 +112,6 @@ const OrdersList = () => {
                   userId,
                   orderStatus,
                   orderTotal,
-                  document,
                   orderCreatedAt,
                   orderItems
                 },
@@ -143,7 +166,9 @@ const OrdersList = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        {document}
+                        <button onClick={() => fetchInvoice(id)} className="mx-6 hover:text-green-400">
+                        <FaFileDownload />
+                        </button>
                       </Typography>
                     </td>
                     <td className={classes}>
@@ -162,7 +187,7 @@ const OrdersList = () => {
                             <th>Product</th>
                             <th>Quantity</th>
                             <th>Price</th>
-                            <th>Discount</th>
+                            <th>Discount</th>yyyyyyyyy
                             <th>Total</th>
                           </tr>
                         </thead>
@@ -186,7 +211,7 @@ const OrdersList = () => {
                         className="font-normal"
                       >
                         <button
-                          className="focus:outline-none flex mx-auto items-center"
+                          className="focus:outline-none flex mx-auto items-center hover:text-blue-500"
                           onClick={(event) =>
                             openEditHandler(event, {
                               id,
@@ -208,7 +233,7 @@ const OrdersList = () => {
                         className="font-normal"
                       >
                         <button
-                          className="focus:outline-none flex mx-auto items-center"
+                          className="focus:outline-none flex mx-auto items-center hover:text-red-500"
                           onClick={(event) =>
                             deleteOrderHandler(event, {
                               id,

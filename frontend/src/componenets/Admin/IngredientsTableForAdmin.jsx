@@ -51,7 +51,7 @@ const IngredientsTableForAdmin = () => {
   const TABLE_HEAD = [
     "Id",
     "Name",
-    "Quanitity",
+    "Quantity",
     "Unit",
     "Price",
     "Edit",

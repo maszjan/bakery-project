@@ -63,7 +63,7 @@ const ClientOrderTable = () => {
           <thead>
             <tr>
               {TABLE_HEAD.map((head) => (
-                <th key={head} className="border-b border-darkerBrown p-4">
+                <th key={head} className="border-b border-typo p-4">
                   <Typography
                     variant="small"
                     color="blue-gray"
@@ -84,7 +84,7 @@ const ClientOrderTable = () => {
                 const isLast = index === ordersData.length - 1;
                 const classes = isLast
                   ? "p-4"
-                  : "p-4 border-b border-darkBrown";
+                  : "p-4 border-b border-typo";
 
                 return (
                   <tr key={id}>
@@ -139,24 +139,34 @@ const ClientOrderTable = () => {
                       </Typography>
                     </td>
                     <td className={classes}>
-                      <table>
+                      <table className="border-black border-2">
                         <thead>
-                          <tr>
-                            <th>Product</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Discount</th>
-                            <th>Total</th>
+                          <tr className="border-black border-2">
+                            <th className="border-black border-2">Product</th>
+                            <th className="border-black border-2">Quantity</th>
+                            <th className="border-black border-2">Price</th>
+                            <th className="border-black border-2">Discount</th>
+                            <th className="border-black border-2">Total</th>
                           </tr>
                         </thead>
                         <tbody>
                           {orderItems.map((item, index) => (
-                            <tr key={index}>
-                              <td>{item.product.name}</td>
-                              <td>{item.qunatity}</td>
-                              <td>${item.price}</td>
-                              <td>${item.discount}</td>
-                              <td>${item.totalPrice}</td>
+                            <tr className="border-black border-2" key={index}>
+                              <td className="border-black border-2">
+                                {item.product.name}
+                              </td>
+                              <td className="border-black border-2">
+                                {item.qunatity}
+                              </td>
+                              <td className="border-black border-2">
+                                ${item.price}
+                              </td>
+                              <td className="border-black border-2">
+                                ${item.discount}
+                              </td>
+                              <td className="border-black border-2">
+                                ${item.totalPrice}
+                              </td>
                             </tr>
                           ))}
                         </tbody>

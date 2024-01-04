@@ -71,7 +71,7 @@ const ClientsList = (props) => {
           <thead>
             <tr>
               {TABLE_HEAD.map((head) => (
-                <th key={head} className="border-b border-darkerBrown p-4">
+                <th key={head} className="border-b border-typo p-4">
                   <Typography
                     variant="small"
                     color="blue-gray"
@@ -183,7 +183,7 @@ const ClientsList = (props) => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        <button className="focus:outline-none flex mx-auto items-center" onClick={(event) => openEditHandler(event, {
+                        <button className="focus:outline-none flex mx-auto items-center hover:text-blue-500" onClick={(event) => openEditHandler(event, {
                             id,
                             name,
                             email,
@@ -203,7 +203,7 @@ const ClientsList = (props) => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        <button className="focus:outline-none flex mx-auto items-center" onClick={(event) => deleteUserHandler(event, {
+                        <button className="focus:outline-none flex mx-auto items-center hover:text-red-500" onClick={(event) => deleteUserHandler(event, {
                             id
                           })}>
                           <AiOutlineCloseCircle/>

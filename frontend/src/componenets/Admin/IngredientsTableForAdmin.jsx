@@ -66,7 +66,7 @@ const IngredientsTableForAdmin = () => {
           <thead>
             <tr>
               {TABLE_HEAD.map((head) => (
-                <th key={head} className="border-b border-darkerBrown p-4">
+                <th key={head} className="border-b border-typo p-4">
                   <Typography
                     variant="small"
                     color="blue-gray"
@@ -93,7 +93,7 @@ const IngredientsTableForAdmin = () => {
                 const isLast = index === ingredientsData.length - 1;
                 const classes = isLast
                   ? "p-4"
-                  : "p-4 border-b border-darkBrown";
+                  : "p-4 border-b border-typo";
 
                 return (
                   <tr key={id}>
@@ -148,7 +148,7 @@ const IngredientsTableForAdmin = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        <button className="focus:outline-none flex mx-auto items-center" onClick={(event) => openEditHandler(event, {
+                        <button className="focus:outline-none flex mx-auto items-center hover:text-blue-500" onClick={(event) => openEditHandler(event, {
                             id,
                             name,
                             quantity,
@@ -165,7 +165,7 @@ const IngredientsTableForAdmin = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        <button className="focus:outline-none flex mx-auto items-center" onClick={(event) => deleteIngredientHandler(event, {
+                        <button className="focus:outline-none flex mx-auto items-center hover:text-red-500" onClick={(event) => deleteIngredientHandler(event, {
                             id
                           })}>
                           <AiOutlineCloseCircle/>

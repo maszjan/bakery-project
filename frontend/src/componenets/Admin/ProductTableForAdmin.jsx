@@ -63,7 +63,7 @@ const ProductsList = () => {
           <thead>
             <tr>
               {TABLE_HEAD.map((head) => (
-                <th key={head} className="border-b border-darkerBrown p-4">
+                <th key={head} className="border-b border-typo p-4">
                   <Typography
                     variant="small"
                     color="blue-gray"
@@ -88,7 +88,7 @@ const ProductsList = () => {
                 const isLast = index === productsData.length - 1;
                 const classes = isLast
                   ? "p-4"
-                  : "p-4 border-b border-darkBrown";
+                  : "p-4 border-b border-typo";
 
                 return (
                   <tr key={id}>
@@ -125,7 +125,7 @@ const ProductsList = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        <button className="focus:outline-none flex mx-auto items-center" onClick={(event) => openEditHandler(event, {
+                        <button className="focus:outline-none flex mx-auto items-center hover:text-blue-500" onClick={(event) => openEditHandler(event, {
                             id,
                             name,
                             price
@@ -140,7 +140,7 @@ const ProductsList = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        <button className="focus:outline-none flex mx-auto items-center" onClick={(event) => deleteProductHandler(event, {
+                        <button className="focus:outline-none flex mx-auto items-center hover:text-red-500" onClick={(event) => deleteProductHandler(event, {
                             id
                           })}>
                           <AiOutlineCloseCircle/>

@@ -28,7 +28,7 @@ const ClientProductsList = () => {
           <thead>
             <tr>
               {TABLE_HEAD.map((head) => (
-                <th key={head} className="border-b border-darkerBrown p-4">
+                <th key={head} className="border-b border-typo p-4">
                   <Typography
                     variant="small"
                     color="blue-gray"
@@ -43,7 +43,7 @@ const ClientProductsList = () => {
           <tbody>
             {productsData.map(({ id, name, price }, index) => {
               const isLast = index === productsData.length - 1;
-              const classes = isLast ? "p-4" : "p-4 border-b border-darkBrown";
+              const classes = isLast ? "p-4" : "p-4 border-b border-typo";
 
               return (
                 <tr key={id}>

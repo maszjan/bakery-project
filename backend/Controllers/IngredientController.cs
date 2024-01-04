@@ -36,6 +36,42 @@ namespace backend.Controllers
             return new JsonResult(ingredient);
         }
 
+        [HttpGet("generateIngredients/{orderId}")]
+        public IActionResult generateIngredients(int orderId)
+        {
+            var order = _context.Orders.Include(o => o.OrderItems).ThenInclude(oi => oi.Product).FirstOrDefault(o => o.Id == orderId);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var result = new List<object>();
+
+            
+            foreach (var orderItem in order.OrderItems)
+            {
+               
+                var productIngredients = _context.ProductIngredients
+                    .Include(pi => pi.Ingredient)
+                    .Where(pi => pi.ProductId == orderItem.Product.Id)
+                    .ToList();
+
+               
+                var ingredientsForProduct = productIngredients.Select(pi => new 
+                {
+                    ProductId = orderItem.Product.Id,
+                    IngredientId = pi.Ingredient.Id,
+                    IngredientName = pi.Ingredient.Name,
+                    Quantity = pi.Quantity * orderItem.Qunatity,
+                    Unit = pi.Ingredient.Unit
+                });
+
+                result.AddRange(ingredientsForProduct);
+    }
+
+    return Ok(result);
+        }
+
         [HttpPost("ingredient")]
         public IActionResult CreateIngredient([FromBody] Ingredient ingredient)
         {

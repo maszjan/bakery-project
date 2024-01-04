@@ -33,6 +33,7 @@ namespace backend.Controllers
             return new JsonResult(product);
         }
 
+
         [HttpPost("product")]
         public IActionResult CreateProduct([FromBody] Product product)
         {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using backend.Models;
 
 
+
 internal class Program
 {
     private static void Main(string[] args)
@@ -34,7 +35,7 @@ internal class Program
        
 
 
-        // Configure the HTTP request pipeline.
+        
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

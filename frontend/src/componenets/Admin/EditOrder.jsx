@@ -10,9 +10,11 @@ const EditOrder = (props) => {
     userId: props.record.userId,
     orderStatus: props.record.orderStatus,
     orderTotal: props.record.orderTotal,
-    document: props.record.document,
     orderCreatedAt: props.record.orderCreatedAt,
   });
+
+
+  
 
   const editHandler = async (e) => {
     e.preventDefault();
@@ -38,7 +40,7 @@ const EditOrder = (props) => {
       <Input diff="number" title="Id" name="id" onChange={inputHandler} value={editOrderData.id}/>
       <Input diff="text" title="User Id" name="userId" onChange={inputHandler} value={editOrderData.userId}/>
       <Input diff="text" title="Order Status" name="orderStatus" onChange={inputHandler} value={editOrderData.orderStatus}/>
-      <Input diff="text" title="document" name="document" onChange={inputHandler} value={editOrderData.document}/>
+      {/* <Input diff="text" title="document" name="document" onChange={inputHandler} value={editOrderData.document}/> */}
       <FormButton onClick={editHandler} text="Update" />
     </div>
   );

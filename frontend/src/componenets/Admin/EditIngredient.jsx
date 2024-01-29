@@ -34,7 +34,7 @@ const EditIngredient = (props) => {
   return (
     <div className="flex flex-col md:flex-wrap space-y-2 bg-semiBrown px-24 py-12 rounded-xl">
     <AiOutlineCloseCircle onClick={props.onClick} className="cursor-pointer text-2xl absolute top-[170px] right-[470px]"/>
-      <Input diff="text" title="Name" name="id" onChange={inputHandler} value={editIngredientData.id} />
+      <Input diff="text" title="Id" name="id" onChange={inputHandler} value={editIngredientData.id} />
       <Input diff="text" title="Name" name="name" onChange={inputHandler} value={editIngredientData.name} />
       <Input diff="number" title="Quantity" name="quantity" onChange={inputHandler} value={editIngredientData.quantity}/>
       <Input diff="text" title="Unit" name="unit" onChange={inputHandler} value={editIngredientData.unit}/>

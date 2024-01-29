@@ -40,7 +40,7 @@ const IngredientsTableForAdmin = () => {
     try {
       // eslint-disable-next-line no-unused-vars
       const response = await axios.delete(
-        `https://localhost:7126/api/v1/user/${record.id}`,
+        `https://localhost:7126/api/v1/ingredient/${record.id}`,
       );
       
     } catch (error) {
